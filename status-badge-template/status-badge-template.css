@@ -1,0 +1,46 @@
+/**
+ * Status Badge Base Styles
+ * 
+ * This file contains only the structural/base styles.
+ * Color and status-specific styles are generated dynamically by JavaScript
+ * based on the STATUS_CONFIG in status-badges-template.js
+ */
+
+/* Base badge structure - applies to all status badges in tables */
+table .status-badge,
+tbody .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Dot element - applies to all status badges in tables */
+table .status-badge::before,
+tbody .status-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+/* Pulse animation - used by animated statuses */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/*
+ * Note: Individual status colors (status-active, status-completed, etc.)
+ * are dynamically generated and injected by status-badges-template.js
+ * 
+ * To customize colors or add new statuses, edit STATUS_CONFIG in the JS file.
+ */
