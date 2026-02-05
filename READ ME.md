@@ -1,0 +1,1 @@
+This repository hosts a set of static, browser-based HTML guides designed to help Neota Studio users understand and implement reusable UI templates and common design patterns. Each guide is self-contained, easy to reference, and focused on practical usage rather than framework-specific implementation details.
