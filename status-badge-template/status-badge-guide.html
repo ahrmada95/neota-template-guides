@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Status Badge System - User Guide</title>
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Typography & Layout */
+        body {
+            font-family: Consolas, "Courier New", monospace;
+            background: linear-gradient(135deg, #1a1d29 0%, #2d3142 100%);
+            color: #e4e6eb;
+            line-height: 1.65;
+            padding: 32px 20px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 40px;
+        }
+
+        /* Headings */
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: 30px;
+            color: #ffffff;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.6);
+            padding-bottom: 14px;
+            margin-bottom: 28px;
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #a5b4fc;
+            margin-top: 48px;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #93c5fd;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 15px;
+            color: #c7d2fe;
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Text & Inline Elements */
+        p {
+            margin-bottom: 16px;
+            color: #d1d5db;
+        }
+
+        strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 16px 0 16px 28px;
+        }
+
+        li {
+            margin: 8px 0;
+            color: #d1d5db;
+        }
+
+        /* Code Blocks */
+        code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #a5b4fc;
+            font-size: 13px;
+        }
+
+        pre {
+            background: #0d1117;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #58a6ff;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 12px 14px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #c7d2fe;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            font-size: 13px;
+            color: #d1d5db;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        /* Info Boxes */
+        .info-box,
+        .success-box,
+        .warning-box {
+            padding: 18px 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .info-box {
+            background: rgba(102, 126, 234, 0.12);
+            border-left: 4px solid #667eea;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.12);
+            border-left: 4px solid #34d399;
+        }
+
+        .warning-box {
+            background: rgba(245, 158, 11, 0.12);
+            border-left: 4px solid #fbbf24;
+        }
+
+        /* Horizontal Rule */
+        hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            margin: 48px 0;
+        }
+
+        /* Syntax Highlighting */
+        .syntax-html { color: #ff7b72; }
+        .syntax-keyword { color: #ff7b72; }
+        .syntax-string { color: #a5d6ff; }
+        .syntax-property { color: #79c0ff; }
+        .syntax-value { color: #a5d6ff; }
+        .syntax-comment { color: #8b949e; font-style: italic; }
+        .syntax-function { color: #d2a8ff; }
+        .syntax-number { color: #79c0ff; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+            .container {
+                padding: 24px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+        /* Demo table styles */
+        .demo-table .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .demo-table .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .demo-table .status-active {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+        }
+
+        .demo-table .status-active::before {
+            background: #34d399;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .demo-table .status-completed {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+        }
+
+        .demo-table .status-completed::before {
+            background: #60a5fa;
+        }
+
+        .demo-table .status-deactivated {
+            background: rgba(107, 114, 128, 0.15);
+            color: #9ca3af;
+        }
+
+        .demo-table .status-deactivated::before {
+            background: #9ca3af;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dynamic Status Badge System</h1>
+        <p>A beginner-friendly guide to understanding and customizing status badges in your tables.</p>
+
+        <div class="info-box">
+            <strong>Live Example:</strong> See this system in action at <a href="https://ahnaf.neotalogic.com/a/status_cards" target="_blank">ahnaf.neotalogic.com/a/status_cards</a>
+        </div>
+
+        <h2>Required Files</h2>
+        <p>To use this system, you need to include three files in your project. Download them from this repository:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Purpose</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>status-badge-template.css</code></td>
+                    <td>Base structure and styling for badges</td>
+                    <td><a href="./status-badge-template.css" download>Download CSS</a></td>
+                </tr>
+                <tr>
+                    <td><code>status-badge-template.js</code></td>
+                    <td>Configuration and automatic badge detection</td>
+                    <td><a href="./status-badge-template.js" download>Download JS</a></td>
+                </tr>
+                <tr>
+                    <td><code>ahnaf_styling.css</code></td>
+                    <td>(Optional) Page styling used in examples</td>
+                    <td><a href="./ahnaf_styling.css" download>Download Styling</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>How to Include in Your HTML</h3>
+        <p>Add these lines to the <code>&lt;head&gt;</code> section of your HTML page:</p>
+
+        <pre><code><span class="syntax-html">&lt;head&gt;</span>
+    <span class="syntax-comment">&lt;!-- Your other head content --&gt;</span>
+    
+    <span class="syntax-comment">&lt;!-- Status Badge System --&gt;</span>
+    <span class="syntax-html">&lt;link</span> <span class="syntax-property">rel</span>=<span class="syntax-string">"stylesheet"</span> <span class="syntax-property">href</span>=<span class="syntax-string">"status-badge-template.css"</span><span class="syntax-html">&gt;</span>
+    <span class="syntax-html">&lt;script</span> <span class="syntax-property">src</span>=<span class="syntax-string">"status-badge-template.js"</span><span class="syntax-html">&gt;&lt;/script&gt;</span>
+<span class="syntax-html">&lt;/head&gt;</span></code></pre>
+
+        <div class="success-box">
+            <strong>That's all you need!</strong> The JavaScript file will automatically run when the page loads and style all your status badges.
+        </div>
+
+        <h3>Alternative: Link Directly from GitHub</h3>
+        <p>If you're hosting on GitHub Pages or want to link directly to the files, you can use these URLs:</p>
+
+        <pre><code><span class="syntax-comment">&lt;!-- Replace USERNAME and REPO with your GitHub details --&gt;</span>
+<span class="syntax-html">&lt;link</span> <span class="syntax-property">rel</span>=<span class="syntax-string">"stylesheet"</span> 
+      <span class="syntax-property">href</span>=<span class="syntax-string">"https://raw.githubusercontent.com/USERNAME/REPO/main/status-badge-template.css"</span><span class="syntax-html">&gt;</span>
+<span class="syntax-html">&lt;script</span> <span class="syntax-property">src</span>=<span class="syntax-string">"https://raw.githubusercontent.com/USERNAME/REPO/main/status-badge-template.js"</span><span class="syntax-html">&gt;&lt;/script&gt;</span></code></pre>
+
+        <div class="info-box">
+            <strong>Note:</strong> If your files are in a subdirectory, adjust the path accordingly (e.g., <code>/main/css/status-badge-template.css</code>). Replace <code>main</code> with your branch name if different.
+        </div>
+
+        <h2>What Are Status Badges?</h2>
+        <p>Status badges are those colorful pills you see in tables that show the state of something - like "Active", "Completed", or "Pending". This system makes them look professional and easy to customize without writing lots of code.</p>
+
+        <table class="demo-table">
+            <thead>
+                <tr>
+                    <th>Contract Name</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Software License Agreement</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>Jan 15, 2025</td>
+                </tr>
+                <tr>
+                    <td>Consulting Services</td>
+                    <td><span class="status-badge status-completed">Completed</span></td>
+                    <td>Dec 10, 2024</td>
+                </tr>
+                <tr>
+                    <td>NDA - Tech Corp</td>
+                    <td><span class="status-badge status-deactivated">Deactivated</span></td>
+                    <td>Nov 3, 2024</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Where Does This Work?</h2>
+        <p>The status badge system <strong>only works inside tables</strong>. Specifically, it looks for elements with the class <code>status-badge</code> that are inside a <code>&lt;table&gt;</code> element.</p>
+
+        <div class="warning-box">
+            <strong>Important:</strong> Status badges outside of tables won't be styled automatically. The system is designed specifically for table-based data displays.
+        </div>
+
+        <h3>What Gets Styled</h3>
+        <ul>
+            <li>Any element with class <code>status-badge</code> inside a <code>&lt;table&gt;</code></li>
+            <li>The colored dot that appears before the text</li>
+            <li>The background color, text color, and animations</li>
+        </ul>
+
+        <hr>
+
+        <h2>How to Add New Status Badges</h2>
+        <p>Adding a new status type is easy - you just need to edit one configuration object in the JavaScript file. No CSS knowledge required!</p>
+
+        <h3>Step 1: Open the JavaScript File</h3>
+        <p>Find and open <code>status-badge-template.js</code>. Look for the section that says <code>STATUS_CONFIG</code>.</p>
+
+        <h3>Step 2: Add Your New Status</h3>
+        <p>Let's say you want to add a "Pending" status with an orange color. Here's what you do:</p>
+
+        <pre><code><span class="syntax-keyword">const</span> <span class="syntax-value">STATUS_CONFIG</span> = {
+    <span class="syntax-string">'active'</span>: {
+        <span class="syntax-property">className</span>: <span class="syntax-string">'status-active'</span>,
+        <span class="syntax-property">backgroundColor</span>: <span class="syntax-string">'rgba(16, 185, 129, 0.15)'</span>,
+        <span class="syntax-property">textColor</span>: <span class="syntax-string">'#34d399'</span>,
+        <span class="syntax-property">dotColor</span>: <span class="syntax-string">'#34d399'</span>,
+        <span class="syntax-property">animated</span>: <span class="syntax-keyword">true</span>
+    },
+    <span class="syntax-string">'completed'</span>: {
+        <span class="syntax-property">className</span>: <span class="syntax-string">'status-completed'</span>,
+        <span class="syntax-property">backgroundColor</span>: <span class="syntax-string">'rgba(59, 130, 246, 0.15)'</span>,
+        <span class="syntax-property">textColor</span>: <span class="syntax-string">'#60a5fa'</span>,
+        <span class="syntax-property">dotColor</span>: <span class="syntax-string">'#60a5fa'</span>,
+        <span class="syntax-property">animated</span>: <span class="syntax-keyword">false</span>
+    },
+    <span class="syntax-comment">// ADD YOUR NEW STATUS HERE:</span>
+    <span class="syntax-string">'pending'</span>: {
+        <span class="syntax-property">className</span>: <span class="syntax-string">'status-pending'</span>,
+        <span class="syntax-property">backgroundColor</span>: <span class="syntax-string">'rgba(245, 158, 11, 0.15)'</span>,
+        <span class="syntax-property">textColor</span>: <span class="syntax-string">'#fbbf24'</span>,
+        <span class="syntax-property">dotColor</span>: <span class="syntax-string">'#fbbf24'</span>,
+        <span class="syntax-property">animated</span>: <span class="syntax-keyword">false</span>
+    }
+};</code></pre>
+
+        <h3>Step 3: Understand Each Property</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>What It Does</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>className</code></td>
+                    <td>The CSS class that gets added (should start with "status-")</td>
+                    <td><code>'status-pending'</code></td>
+                </tr>
+                <tr>
+                    <td><code>backgroundColor</code></td>
+                    <td>The badge's background color (use rgba for transparency)</td>
+                    <td><code>'rgba(245, 158, 11, 0.15)'</code></td>
+                </tr>
+                <tr>
+                    <td><code>textColor</code></td>
+                    <td>The text color inside the badge</td>
+                    <td><code>'#fbbf24'</code></td>
+                </tr>
+                <tr>
+                    <td><code>dotColor</code></td>
+                    <td>The color of the small dot before the text</td>
+                    <td><code>'#fbbf24'</code></td>
+                </tr>
+                <tr>
+                    <td><code>animated</code></td>
+                    <td>Whether the dot should pulse (true/false)</td>
+                    <td><code>true</code> or <code>false</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Step 4: Use It in Your HTML</h3>
+        <p>Once you've added the status to the config, just use it in your table:</p>
+
+        <pre><code><span class="syntax-html">&lt;table&gt;</span>
+    <span class="syntax-html">&lt;tr&gt;</span>
+        <span class="syntax-html">&lt;td&gt;</span>Contract Name<span class="syntax-html">&lt;/td&gt;</span>
+        <span class="syntax-html">&lt;td&gt;</span>
+            <span class="syntax-html">&lt;span</span> <span class="syntax-property">class</span>=<span class="syntax-string">"status-badge"</span><span class="syntax-html">&gt;</span>Pending<span class="syntax-html">&lt;/span&gt;</span>
+        <span class="syntax-html">&lt;/td&gt;</span>
+    <span class="syntax-html">&lt;/tr&gt;</span>
+<span class="syntax-html">&lt;/table&gt;</span></code></pre>
+
+        <div class="success-box">
+            <strong>That's it!</strong> The system will automatically detect the word "Pending", match it to your config, and apply the orange styling.
+        </div>
+
+        <h3>Choosing Colors</h3>
+        <p>Here are some pre-made color combinations you can use:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Status Type</th>
+                    <th>Background Color</th>
+                    <th>Text/Dot Color</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Success/Active (Green)</td>
+                    <td><code>rgba(16, 185, 129, 0.15)</code></td>
+                    <td><code>#34d399</code></td>
+                </tr>
+                <tr>
+                    <td>Info/Completed (Blue)</td>
+                    <td><code>rgba(59, 130, 246, 0.15)</code></td>
+                    <td><code>#60a5fa</code></td>
+                </tr>
+                <tr>
+                    <td>Warning/Pending (Orange)</td>
+                    <td><code>rgba(245, 158, 11, 0.15)</code></td>
+                    <td><code>#fbbf24</code></td>
+                </tr>
+                <tr>
+                    <td>Error/Failed (Red)</td>
+                    <td><code>rgba(239, 68, 68, 0.15)</code></td>
+                    <td><code>#f87171</code></td>
+                </tr>
+                <tr>
+                    <td>Neutral/Inactive (Gray)</td>
+                    <td><code>rgba(107, 114, 128, 0.15)</code></td>
+                    <td><code>#9ca3af</code></td>
+                </tr>
+                <tr>
+                    <td>Purple/Special</td>
+                    <td><code>rgba(139, 92, 246, 0.15)</code></td>
+                    <td><code>#a78bfa</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h2>How the System Works</h2>
+        <p>Understanding how the pieces fit together helps you troubleshoot and customize more effectively.</p>
+
+        <h3>The Three Files</h3>
+        <p>The system consists of three files working together:</p>
+
+        <h4>1. HTML - Your Table Structure</h4>
+        <p>This is where you create your table and add status badges:</p>
+
+        <pre><code><span class="syntax-html">&lt;table&gt;</span>
+    <span class="syntax-html">&lt;tbody&gt;</span>
+        <span class="syntax-html">&lt;tr&gt;</span>
+            <span class="syntax-html">&lt;td&gt;</span>Project Alpha<span class="syntax-html">&lt;/td&gt;</span>
+            <span class="syntax-html">&lt;td&gt;</span>
+                <span class="syntax-html">&lt;span</span> <span class="syntax-property">class</span>=<span class="syntax-string">"status-badge"</span><span class="syntax-html">&gt;</span>Active<span class="syntax-html">&lt;/span&gt;</span>
+            <span class="syntax-html">&lt;/td&gt;</span>
+        <span class="syntax-html">&lt;/tr&gt;</span>
+    <span class="syntax-html">&lt;/tbody&gt;</span>
+<span class="syntax-html">&lt;/table&gt;</span></code></pre>
+
+        <div class="info-box">
+            <strong>Key Point:</strong> The text inside the badge (like "Active") is what triggers the styling. The system reads this text and matches it to your STATUS_CONFIG.
+        </div>
+
+        <h4>2. CSS - The Structure</h4>
+        <p>The CSS file (<code>status-badge-template.css</code>) defines the basic structure:</p>
+
+        <ul>
+            <li>Makes badges display as pills with rounded corners</li>
+            <li>Adds the dot before the text</li>
+            <li>Sets up the pulse animation</li>
+        </ul>
+
+        <p>The CSS file does NOT contain specific colors - those are generated by JavaScript.</p>
+
+        <h4>3. JavaScript - The Magic</h4>
+        <p>The JavaScript file does all the smart work:</p>
+
+        <ol>
+            <li><strong>Reads Your Config:</strong> It looks at the STATUS_CONFIG object you edited</li>
+            <li><strong>Generates CSS:</strong> It creates color styles based on your config</li>
+            <li><strong>Injects Styles:</strong> It adds those styles to the page</li>
+            <li><strong>Finds Badges:</strong> It searches for all elements with class "status-badge" inside tables</li>
+            <li><strong>Reads Text:</strong> For each badge, it reads the text content ("Active", "Pending", etc.)</li>
+            <li><strong>Applies Classes:</strong> It adds the matching class (like "status-active") to the badge</li>
+        </ol>
+
+        <h3>The Flow in Action</h3>
+        <p>Here's what happens when your page loads:</p>
+
+        <pre><code><span class="syntax-comment">// You write this in HTML:</span>
+<span class="syntax-html">&lt;span</span> <span class="syntax-property">class</span>=<span class="syntax-string">"status-badge"</span><span class="syntax-html">&gt;</span>Active<span class="syntax-html">&lt;/span&gt;</span>
+
+<span class="syntax-comment">// JavaScript reads "Active" and thinks:</span>
+<span class="syntax-comment">// "I see the word 'active' in my STATUS_CONFIG!"</span>
+
+<span class="syntax-comment">// JavaScript adds the class:</span>
+<span class="syntax-html">&lt;span</span> <span class="syntax-property">class</span>=<span class="syntax-string">"status-badge status-active"</span><span class="syntax-html">&gt;</span>Active<span class="syntax-html">&lt;/span&gt;</span>
+
+<span class="syntax-comment">// Now the CSS styles for "status-active" apply automatically!</span></code></pre>
+
+        <h3>Why This Approach?</h3>
+        <p>This system is designed to be maintainer-friendly:</p>
+
+        <ul>
+            <li><strong>One Place to Edit:</strong> All your status types and colors live in STATUS_CONFIG</li>
+            <li><strong>Automatic Application:</strong> Just type the status name in your HTML - the system handles the rest</li>
+            <li><strong>Consistent Styling:</strong> Every "Active" badge looks the same across your entire site</li>
+            <li><strong>Easy Updates:</strong> Change a color once in STATUS_CONFIG, and it updates everywhere</li>
+        </ul>
+
+        <hr>
+
+        <h2>Quick Reference</h2>
+
+        <h3>Adding a New Status</h3>
+        <ol>
+            <li>Open <code>status-badge-template.js</code></li>
+            <li>Find <code>STATUS_CONFIG</code></li>
+            <li>Copy an existing status block</li>
+            <li>Change the status name (the key) to your new status</li>
+            <li>Update the className (keep it as "status-" + your status name)</li>
+            <li>Choose your colors from the table above</li>
+            <li>Set <code>animated</code> to <code>true</code> or <code>false</code></li>
+            <li>Save the file</li>
+        </ol>
+
+        <h3>Using a Status in HTML</h3>
+        <pre><code><span class="syntax-html">&lt;span</span> <span class="syntax-property">class</span>=<span class="syntax-string">"status-badge"</span><span class="syntax-html">&gt;</span>YourStatusName<span class="syntax-html">&lt;/span&gt;</span></code></pre>
+
+        <div class="warning-box">
+            <strong>Case Sensitivity:</strong> The status text in your HTML should match the key in STATUS_CONFIG. The system converts everything to lowercase, so "Active", "active", and "ACTIVE" all work the same.
+        </div>
+
+        <h3>Common Issues</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Problem</th>
+                    <th>Solution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Badge has no color</td>
+                    <td>Make sure the text matches a key in STATUS_CONFIG (check for typos)</td>
+                </tr>
+                <tr>
+                    <td>Badge not showing up</td>
+                    <td>Confirm the badge is inside a <code>&lt;table&gt;</code> element</td>
+                </tr>
+                <tr>
+                    <td>Changes not appearing</td>
+                    <td>Clear your browser cache and reload the page</td>
+                </tr>
+                <tr>
+                    <td>Dot not pulsing</td>
+                    <td>Check that <code>animated: true</code> is set in STATUS_CONFIG</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h2>Advanced: Custom Animations</h2>
+        <p>If you want to add your own animation beyond the pulse effect, you can modify the CSS file. The pulse animation is defined like this:</p>
+
+        <pre><code><span class="syntax-keyword">@keyframes</span> <span class="syntax-function">pulse</span> {
+    <span class="syntax-value">0%</span>, <span class="syntax-value">100%</span> {
+        <span class="syntax-property">opacity</span>: <span class="syntax-value">1</span>;
+    }
+    <span class="syntax-value">50%</span> {
+        <span class="syntax-property">opacity</span>: <span class="syntax-value">0.5</span>;
+    }
+}</code></pre>
+
+        <p>You could create new animations and reference them in the STATUS_CONFIG by modifying the JavaScript's <code>generateStatusStyles()</code> function.</p>
+
+        <hr>
+
+        <div class="success-box">
+            <strong>You're All Set!</strong> You now understand how to use and customize the dynamic status badge system. Start by adding your first custom status, and experiment with different colors and animations.
+        </div>
+
+        <p style="margin-top: 40px; text-align: center; color: #9ca3af; font-size: 12px;">
+            Live Demo: <a href="https://ahnaf.neotalogic.com/a/status_cards" target="_blank">ahnaf.neotalogic.com/a/status_cards</a><br>
+            <span style="margin-top: 8px; display: inline-block;">Download files and view source code in the repository</span>
+        </p>
+    </div>
+</body>
+</html>
